@@ -1,0 +1,29 @@
+<script src="js/marked.js"></script>
+<script>
+function render(data) {
+    if(data.template) {
+        var request = new XMLHttpRequest();
+        request.onload = function() {
+            delete data.template;
+            var front = /^---\n((.|\n)*)\n---/;
+            data.content = request.response.replace(front, function(f, json) {
+                settings = JSON.parse(json);
+                for(var i in settings){ data[i] = data[i] || settings[i]; }
+                return '';
+            }).replace(/{{ (.*) }}/g, function(match, wildcard) {
+                return data[wildcard] || match;
+            });
+            render(data);
+        };
+        request.open("get", data.template);
+        request.send();
+    } else {
+        document.body.innerHTML = marked(data.content);
+    }
+}
+onhashchange = function() {
+    template = location.hash.length ? location.hash.slice(1) : 'index';
+    render({'template': template + ".md"});
+}
+onhashchange();
+</script>
