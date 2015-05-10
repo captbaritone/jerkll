@@ -13,12 +13,13 @@ function render(data) {
             }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
                 return data[wildcard] || match;
             });
+            data.content = marked(data.content);
             render(data);
         };
         request.open("get", data.template);
         request.send();
     } else {
-        document.body.innerHTML = marked(data.content);
+        document.body.innerHTML = data.content;
     }
 }
 onhashchange = function() {
