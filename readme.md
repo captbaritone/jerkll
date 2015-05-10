@@ -10,6 +10,8 @@ via http.
 
 No server-side compilation is need. All rendering is done in the browser.
 
+Demo: https://jordaneldredge.com/projects/jerkll/
+
 ## Is this a terrible idea?
 
 Yes.
