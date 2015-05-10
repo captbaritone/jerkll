@@ -1,4 +1,4 @@
-<script src="js/marked.js"></script>
+<script src="marked.js"></script>
 <script>
 function render(data) {
     if(data.template) {
@@ -24,7 +24,7 @@ function render(data) {
 }
 onhashchange = function() {
     page = location.hash.length ? location.hash.slice(1) : 'index';
-    render({'template': page + ".md"});
+    render({'template': 'pages/' + page + ".md"});
 }
 onhashchange();
 </script>
