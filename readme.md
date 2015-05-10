@@ -5,7 +5,7 @@
 }
 ---
 A tiny(!) JavaScript clone of [Jekyll](http://jekyllrb.com/) inspired by
-[RequireJS](http://requirejs.org/)
+[RequireJS](http://requirejs.org/).
 
 Like **Jekyll**, you maintain your website as a collection of static markdown
 files. Like **RequireJS**, dependencies (templates) are resolved on the fly
@@ -23,7 +23,7 @@ Yes.
 * Create your pages as `.md` files. `/index.md` will be your default page.
 * Link to other pages: `#path/to/markdown/file`.
 * For local development, issue `python -m SimpleHTTPServer`. Asynchronous
-  loading of files is prohibited via the `file:///` protocol.
+  loading of files via the `file:///` protocol is prohibited.
 
 ### Format
 
@@ -37,7 +37,8 @@ Pages and templates take the following format:
       ---
       # Hello World
 
-      My name is {{ name }}. Welcome to my home page, please visit my [blog](#blog)
+      My name is {{ name }}. Welcome to my home page, please visit my
+      [blog](#blog)
 
 A template must include a `{{ content }}` wild card:
 
