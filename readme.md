@@ -1,4 +1,4 @@
-# Readme
+# Jerkll
 
 A tiny ([30 line](https://github.com/captbaritone/jerkll/blob/master/index.html))
 JavaScript clone of [Jekyll](http://jekyllrb.com/) inspired by
