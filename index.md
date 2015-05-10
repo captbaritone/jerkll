@@ -4,5 +4,5 @@
    "page.title": "Jerkll"
 }
 ---
-You have found the home page of Jerkll. You probably want to read the
+You have found the home page/demo of Jerkll. You probably want to read the
 [Readme](#readme).
