@@ -1,5 +1,9 @@
-# Jerkll
-
+---
+{
+   "template": "templates/page.html",
+   "page.title": "Readme"
+}
+---
 A tiny(!) JavaScript clone of [Jekyll](http://jekyllrb.com/) inspired by
 [RequireJS](http://requirejs.org/)
 
