@@ -1,10 +1,57 @@
 ---
 {
-   "title": "Bach.js"
+   "title": "Jerkll",
+   "author": "Jordan Eldredge",
+   "twitter_handle": "captbaritone"
 }
 ---
-<title>{{ title }}</title>
-<h1>My Home Page</h1>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<a href='#'>Home</a>
-{{ content }}
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css" type="text/css">
+
+    <!-- Fonts -->
+    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="site-wrap">
+   <header class="site-header px2 px-responsive">
+   <div class="mt2 wrap">
+      <div class="measure">
+         <a href="#" class="site-title">{{ title }}</a>
+         <nav class="site-nav right">
+            <a href='#'>Home</a>
+            <a href='#readme'>Readme</a>
+            <a href='#author'>Author</a>
+            <a href='https://github.com/captbaritone/jerkll'>GitHub</a>
+         </nav>
+         <div class="clearfix"></div>
+      </div>
+   </div>
+   </header>
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        {{ content }}
+      </div>
+    </div>
+  </div>
+
+   <footer class="footer">
+   <div class="p2 wrap">
+      <div class="measure mt1 center">
+         <small>
+         Crafted with &lt;3 by <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).<br>
+         &lt;/&gt; available on <a href="https://github.com/johnotander/pixyll">Github</a>.
+         </small>
+      </div>
+   </div>
+   </footer>
+</body>
+</html>

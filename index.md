@@ -1,9 +1,8 @@
 ---
 {
-   "template": "templates/index.html",
-   "title": "bar"
+   "template": "templates/page.html",
+   "page.title": "Jerkll"
 }
 ---
-# Hello World
-
-Welcome to my home page, please visit my [blog](#blog)
+You have found the home page of Jerkll. You probably want to read the
+[Readme](#readme).
