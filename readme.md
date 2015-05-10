@@ -4,7 +4,8 @@
    "page.title": "Readme"
 }
 ---
-A tiny(!) JavaScript clone of [Jekyll](http://jekyllrb.com/) inspired by
+A tiny([!](https://github.com/captbaritone/jerkll/blob/master/index.html))
+JavaScript clone of [Jekyll](http://jekyllrb.com/) inspired by
 [RequireJS](http://requirejs.org/).
 
 Like **Jekyll**, you maintain your website as a collection of static markdown
