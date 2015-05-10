@@ -23,8 +23,8 @@ function render(data) {
     }
 }
 onhashchange = function() {
-    template = location.hash.length ? location.hash.slice(1) : 'index';
-    render({'template': template + ".md"});
+    page = location.hash.length ? location.hash.slice(1) : 'index';
+    render({'template': page + ".md"});
 }
 onhashchange();
 </script>
