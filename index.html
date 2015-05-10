@@ -10,7 +10,7 @@ function render(data) {
                 settings = JSON.parse(json);
                 for(var i in settings){ data[i] = data[i] || settings[i]; }
                 return '';
-            }).replace(/{{ (.*) }}/g, function(match, wildcard) {
+            }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
                 return data[wildcard] || match;
             });
             render(data);
