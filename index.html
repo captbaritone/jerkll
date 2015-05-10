@@ -2,11 +2,11 @@
 <script>
 function render(data) {
     if(data.template) {
-        var request = new XMLHttpRequest();
-        request.onload = function() {
+        var req = new XMLHttpRequest();
+        req.onload = function() {
             delete data.template;
             var front = /^---\n((.|\n)*)\n---/;
-            data.content = request.response.replace(front, function(f, json) {
+            data.content = req.response.replace(front, function(f, json) {
                 settings = JSON.parse(json);
                 for(var i in settings){ data[i] = data[i] || settings[i]; }
                 return '';
@@ -16,8 +16,8 @@ function render(data) {
             data.content = marked(data.content);
             render(data);
         };
-        request.open("get", data.template);
-        request.send();
+        req.open("get", data.template);
+        req.send();
     } else {
         document.body.innerHTML = data.content;
     }
