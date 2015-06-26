@@ -2,22 +2,22 @@
 <script>
 (window.onhashchange = function() {
     var page = location.hash.length ? location.hash.slice(1) : 'index';
-    (function render(data) {
+    (function render(d) {
         var req = new XMLHttpRequest();
         req.onload = function() {
-            delete data.template;
+            delete d.template;
             var front = /^---\n((.|\n)*)\n---/;
-            data.content = req.response.replace(front, function(f, json) {
+            d.content = req.response.replace(front, function(f, json) {
                 var settings = JSON.parse(json);
-                for(var i in settings){ data[i] = data[i] || settings[i]; }
+                for(var i in settings){ d[i] = d[i] || settings[i]; }
                 return '';
             }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
-                return data[wildcard] || match;
+                return d[wildcard] || match;
             });
-            data.content = marked(data.content);
-            data.template ? render(data) : document.body.innerHTML = data.content;
+            d.content = marked(d.content);
+            d.template ? render(d) : document.body.innerHTML = d.content;
         };
-        req.open("get", data.template);
+        req.open("get", d.template);
         req.send();
     })({'template': 'pages/' + page + ".md"});
 })();
