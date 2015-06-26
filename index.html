@@ -1,26 +1,22 @@
 <script src="marked.js"></script>
 <script>
 function render(data) {
-    if(data.template) {
-        var req = new XMLHttpRequest();
-        req.onload = function() {
-            delete data.template;
-            var front = /^---\n((.|\n)*)\n---/;
-            data.content = req.response.replace(front, function(f, json) {
-                var settings = JSON.parse(json);
-                for(var i in settings){ data[i] = data[i] || settings[i]; }
-                return '';
-            }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
-                return data[wildcard] || match;
-            });
-            data.content = marked(data.content);
-            render(data);
-        };
-        req.open("get", data.template);
-        req.send();
-    } else {
-        document.body.innerHTML = data.content;
-    }
+    var req = new XMLHttpRequest();
+    req.onload = function() {
+        delete data.template;
+        var front = /^---\n((.|\n)*)\n---/;
+        data.content = req.response.replace(front, function(f, json) {
+            var settings = JSON.parse(json);
+            for(var i in settings){ data[i] = data[i] || settings[i]; }
+            return '';
+        }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
+            return data[wildcard] || match;
+        });
+        data.content = marked(data.content);
+        data.template ? render(data) : document.body.innerHTML = data.content;
+    };
+    req.open("get", data.template);
+    req.send();
 };
 (window.onhashchange = function() {
     var page = location.hash.length ? location.hash.slice(1) : 'index';
