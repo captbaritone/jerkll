@@ -7,7 +7,7 @@ function render(data) {
             delete data.template;
             var front = /^---\n((.|\n)*)\n---/;
             data.content = req.response.replace(front, function(f, json) {
-                settings = JSON.parse(json);
+                var settings = JSON.parse(json);
                 for(var i in settings){ data[i] = data[i] || settings[i]; }
                 return '';
             }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
@@ -21,10 +21,10 @@ function render(data) {
     } else {
         document.body.innerHTML = data.content;
     }
-}
-onhashchange = function() {
-    page = location.hash.length ? location.hash.slice(1) : 'index';
+};
+window.onhashchange = function() {
+    var page = location.hash.length ? location.hash.slice(1) : 'index';
     render({'template': 'pages/' + page + ".md"});
-}
-onhashchange();
+};
+window.onhashchange();
 </script>
