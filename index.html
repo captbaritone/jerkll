@@ -7,7 +7,7 @@
     req.onload = function() {
         delete d.template;
         d.content = marked(req.response.replace(f, function(f, j) {
-            for(i in JSON.parse(j)){ d[i] = d[i] || JSON.parse(j)[i]; };
+            for(i in s = JSON.parse(j)){ d[i] = d[i] || s[i]; };
             return '';
         }).replace(/{{ (\S*) }}/g, function(m, w) { return d[w] || m; }));
         d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
