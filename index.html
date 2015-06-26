@@ -1,22 +1,21 @@
 <script src="marked.js"></script>
 <script>
-(window.onhashchange = function() {
-    var page = location.hash.length ? location.hash.slice(1) : 'index';
-    (function render(d) {
-        var req = new XMLHttpRequest(), front = /^---\n((.|\n)*)\n---/;
-        req.onload = function() {
-            delete d.template;
-            d.content = marked(req.response.replace(front, function(f, json) {
-                var settings = JSON.parse(json);
-                for(var i in settings){ d[i] = d[i] || settings[i]; }
-                return '';
-            }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
-                return d[wildcard] || match;
-            }));
-            d.template ? render(d) : document.body.innerHTML = d.content;
-        };
-        req.open("get", d.template);
-        req.send();
-    })({'template': 'pages/' + page + ".md"});
+(window.onhashchange = function(e, d) {
+    var page = location.hash ? location.hash.slice(1) : 'index';
+    d = d || {'template': 'pages/' + page + ".md"};
+    var req = new XMLHttpRequest(), front = /^---\n((.|\n)*)\n---/;
+    req.onload = function() {
+        delete d.template;
+        d.content = marked(req.response.replace(front, function(f, json) {
+            var settings = JSON.parse(json);
+            for(var i in settings){ d[i] = d[i] || settings[i]; }
+            return '';
+        }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
+            return d[wildcard] || match;
+        }));
+        d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
+    };
+    req.open("get", d.template);
+    req.send();
 })();
 </script>
