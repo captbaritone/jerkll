@@ -1,6 +1,6 @@
 <script src="marked.js"></script>
 <script>
-(window.onhashchange = function(e, d) {
+(onhashchange = function(e, d) {
     var p = location.hash ? location.hash.slice(1) : 'index';
     d = d || {'template': 'pages/' + p + ".md"};
     var req = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
