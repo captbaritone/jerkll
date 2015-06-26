@@ -3,16 +3,16 @@
 (onhashchange = function(e, d) {
     var p = location.hash ? location.hash.slice(1) : 'index';
     d = d || {'template': 'pages/' + p + ".md"};
-    var req = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
-    req.onload = function() {
-        d.content = marked(req.response.replace(f, function(f, j) {
+    var r = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
+    r.onload = function() {
+        d.content = marked(r.response.replace(f, function(f, j) {
             for(i in s = JSON.parse(j)){ d[i] = d[i] || s[i]; };
             d.template = s.template;
             return '';
         }).replace(/{{ (\S*) }}/g, function(m, w) { return d[w] || m; }));
         d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
     };
-    req.open("get", d.template);
-    req.send();
+    r.open("get", d.template);
+    r.send();
 })();
 </script>
