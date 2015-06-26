@@ -1,18 +1,15 @@
 <script src="marked.js"></script>
 <script>
 (window.onhashchange = function(e, d) {
-    var page = location.hash ? location.hash.slice(1) : 'index';
-    d = d || {'template': 'pages/' + page + ".md"};
-    var req = new XMLHttpRequest(), front = /^---\n((.|\n)*)\n---/;
+    var p = location.hash ? location.hash.slice(1) : 'index';
+    d = d || {'template': 'pages/' + p + ".md"};
+    var req = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
     req.onload = function() {
         delete d.template;
-        d.content = marked(req.response.replace(front, function(f, json) {
-            var settings = JSON.parse(json);
-            for(var i in settings){ d[i] = d[i] || settings[i]; }
+        d.content = marked(req.response.replace(f, function(e, j) {
+            for(i in JSON.parse(j)){ d[i] = d[i] || JSON.parse(j)[i]; };
             return '';
-        }).replace(/{{ (\S*) }}/g, function(match, wildcard) {
-            return d[wildcard] || match;
-        }));
+        }).replace(/{{ (\S*) }}/g, function(m, w) { return d[w] || m; }));
         d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
     };
     req.open("get", d.template);
