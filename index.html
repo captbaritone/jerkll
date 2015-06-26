@@ -3,10 +3,9 @@
 (window.onhashchange = function() {
     var page = location.hash.length ? location.hash.slice(1) : 'index';
     (function render(d) {
-        var req = new XMLHttpRequest();
+        var req = new XMLHttpRequest(), front = /^---\n((.|\n)*)\n---/;
         req.onload = function() {
             delete d.template;
-            var front = /^---\n((.|\n)*)\n---/;
             d.content = req.response.replace(front, function(f, json) {
                 var settings = JSON.parse(json);
                 for(var i in settings){ d[i] = d[i] || settings[i]; }
