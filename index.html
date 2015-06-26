@@ -5,9 +5,9 @@
     d = d || {'template': 'pages/' + p + ".md"};
     var req = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
     req.onload = function() {
-        delete d.template;
         d.content = marked(req.response.replace(f, function(f, j) {
             for(i in s = JSON.parse(j)){ d[i] = d[i] || s[i]; };
+            d.template = s.template;
             return '';
         }).replace(/{{ (\S*) }}/g, function(m, w) { return d[w] || m; }));
         d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
