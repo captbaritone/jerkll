@@ -22,9 +22,8 @@ function render(data) {
         document.body.innerHTML = data.content;
     }
 };
-window.onhashchange = function() {
+(window.onhashchange = function() {
     var page = location.hash.length ? location.hash.slice(1) : 'index';
     render({'template': 'pages/' + page + ".md"});
-};
-window.onhashchange();
+})();
 </script>
