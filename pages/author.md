@@ -1,11 +1,10 @@
 ---
 {
    "template": "templates/page.html",
-   "page.title": "Author"
+   "page_title": "Author"
 }
 ---
-My name is Jordan Eldredge. You can find out more about me at my website:
 
-http://jordaneldredge.com
+### Author: Jordan Eldredge
 
-I am also on Twitter as [@captbaritone](https://twitter.com/captbaritone).
+

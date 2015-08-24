@@ -2,53 +2,30 @@
 {
    "title": "Jerkll Demo",
    "author": "Jordan Eldredge",
-   "author_website": "https://jordaneldredge.com",
-   "twitter_handle": "captbaritone"
+   "author_website": "http://jordaneldredge.com"
 }
 ---
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ page.title }} - {{ title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="templates/css/pixyll.css" type="text/css">
-
-    <!-- Fonts -->
-    <link href='//fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic' rel='stylesheet' type='text/css'>
-    <link href='//fonts.googleapis.com/css?family=Lato:900,300' rel='stylesheet' type='text/css'>
+    <title><%- page_title %> - <%- title %></title>
+    <link href="<%- _asset('/css/style.css') %>" rel="stylesheet">
 </head>
 <body>
-  <div class="site-wrap">
-   <header class="site-header px2 px-responsive">
-   <div class="mt2 wrap">
-      <div class="measure">
-         <a href="#" class="site-title">{{ title }}</a>
-         <nav class="site-nav right">
-            <a href='#'>Home</a>
-            <a href='#author'>Author</a>
-            <a href='https://github.com/captbaritone/jerkll'>GitHub</a>
-         </nav>
-         <div class="clearfix"></div>
-      </div>
-   </div>
-   </header>
+  <div class='container'>
+    <h1><%- title %></h1>
+    <nav class="site-nav right">
+      <a href='<%- _page('') %>'>Home</a> | <a href='<%- _page('markdown-examples') %>'>Markdown Examples</a> | <a href='<%- _page('author') %>'>Author</a>
+    </nav>
 
-    <div class="post p2 p-responsive wrap" role="main">
-      <div class="measure">
-        {{ content }}
-      </div>
+    <div class="content">
+      <%= _content %>
     </div>
-  </div>
 
-   <footer class="footer">
-   <div class="p2 wrap">
-      <div class="measure mt1 center">
-        <small>&copy; <a href='{{ author_website }}'>{{ author }}</a>, theme <a href='http://pixyll.com/'>Pixyll<a></small>
-      </div>
-   </div>
-   </footer>
+    <footer class="footer">
+      <p>
+      <small>&copy; <a href='<%- author_website %>'><%- author %></a></small>
+      </p>
+    </footer>
+  </div>
 </body>
 </html>

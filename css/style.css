@@ -1,0 +1,10 @@
+body { margin: 0 20%; font-size: 1.1em; }
+h1 { text-align: center; }
+.site-nav { text-align: center; }
+.site-nav a { text-decoration: none; font-weight: bold; }
+.container { max-width: 600px; margin: 0 auto; }
+.content { margin: 3em 0; }
+img { width: 100%; }
+pre { margin: 0 5em; line-height: 1.3em; }
+.footer { text-align: center; }
+

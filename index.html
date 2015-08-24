@@ -1,18 +1,162 @@
-<script src="marked.js"></script>
+<script src="js/marked.js"></script>
+<script src="js/underscore-min.js"></script>
+<script src="js/jszip.min.js"></script>
+<script src="js/FileSaver.js"></script>
 <script>
-(onhashchange = function(e, d) {
-    var p = location.hash ? location.hash.slice(1) : 'index';
-    d = d || {'template': 'pages/' + p + ".md"};
-    var r = new XMLHttpRequest(), f = /^---\n((.|\n)*)\n---/;
-    r.onload = function() {
-        d.content = marked(r.response.replace(f, function(f, j) {
-            for(i in s = JSON.parse(j)){ d[i] = d[i] || s[i]; };
-            d.template = s.template;
-            return '';
-        }).replace(/{{ (\S*) }}/g, function(m, w) { return d[w] || m; }));
-        d.template ? onhashchange(e, d) : document.body.innerHTML = d.content;
+var requestsRunning = 0;
+var fileCollection = {};
+
+function fetchAsset(path) {
+    var req = new XMLHttpRequest();
+    req.onload = function() {
+        fileCollection[path] = req.response;
+        requestsRunning--;
     };
-    r.open("get", d.template);
-    r.send();
-})();
+    req.open("get", path);
+    requestsRunning++;
+    req.send();
+}
+
+var dynamicHelpers = {
+    _asset: function(asset) {
+        return asset;
+    },
+    _page: function(page) {
+        return "#" + page;
+    }
+};
+
+var downloadAsZip = function() {
+    j = new Jerkll();
+    j.helpers = {
+        _asset: function(asset) {
+            fetchAsset(asset);
+            return asset;
+        },
+        _page: function(page) {
+            var dir = page != 'index' ? '/' + page : '';
+            var path = dir + '/index.html';
+            if(!_.has(fileCollection, path)){
+                j.getPageHtml(page).then(function(html) {
+                    fileCollection[path] = html;
+                });
+            }
+            return path;
+        },
+    };
+    j.getPageHtml('');
+    onRequestsComplete(function() {
+        var zip = new JSZip();
+        _.forEach(fileCollection, function(html, path) {
+            zip.file(path, html);
+        });
+
+        var blob = zip.generate({type:"blob"});
+        saveAs(blob, "jerkll.zip");
+    });
+};
+
+var Jerkll = function(helpers) {
+    this.helpers = helpers;
+    this.getPageHtml = function(page) {
+        page = page == '' ? 'index' : page;
+        var self = this;
+        return new Promise(function(resolve, reject) {
+            var data = {'template': 'pages/' + page + ".md", 'page': page}
+            data._helpers = helpers;
+            self.navigateToData(data, resolve);
+        });
+    };
+    // Recursively apply templates
+    this.navigateToData = function(data, callback) {
+        var self = this;
+        var req = new XMLHttpRequest();
+        req.onload = function() {
+            var result = self.splitOutMetaData(req.response);
+            data = self.mergeMetaData(data, result.data);
+            data._content = self.renderTemplate(result.text, data);
+
+            // Do we still need to process templates?
+            if(data.template) {
+                self.navigateToData(data, callback)
+            } else {
+                callback(data._content);
+            }
+            requestsRunning--;
+        };
+        req.open("get", data.template);
+        requestsRunning++;
+        req.send();
+    };
+
+    this.renderTemplate = function(template, data) {
+        _.extend(data, this.helpers)
+        tempFunc = _.template(template);
+        template = tempFunc(data);
+        return marked(template);
+    };
+
+    this.mergeMetaData = function(oldData, newData) {
+        for(i in newData){
+            if(newData[i]) {
+                oldData[i] = newData[i];
+            };
+        };
+        oldData.template = newData.template;
+        return oldData;
+    },
+
+    // Take a text body and return an object containing it's meta data and it's
+    // non-meta data content
+    this.splitOutMetaData = function(text) {
+        var metaMatcher = /^---\n((.|\n)*)\n---/;
+        data = {};
+        var newText = text.replace(metaMatcher, function(match, json) {
+            data = JSON.parse(json);
+            return '';
+        });
+        return {
+            text: newText,
+            data: data
+        }
+    }
+}
+
+j = new Jerkll(dynamicHelpers);
+
+navigateToHash = function(e) {
+    var page = location.hash ? location.hash.slice(1) : '';
+    if(page === "meta:download") {
+        downloadAsZip();
+    } else {
+        j.getPageHtml(page).then(renderHtml)
+    }
+};
+
+function onRequestsComplete(callback) {
+    if(requestsRunning > 0) {
+        window.setTimeout(function() { onRequestsComplete(callback); }, 100);
+    } else {
+        callback();
+    }
+}
+navigateToHash();
+window.onhashchange = navigateToHash;
+
+
+// Replace the current page with html
+function renderHtml(html) {
+    var iframe = document.createElement("iframe");
+
+    // Firefox: iframe must be in the dom to be able to open its document
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=867102
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+
+    var newDocument = iframe.contentDocument;
+    newDocument.open();
+    newDocument.write(html);
+    newDocument.close();
+    document.replaceChild(newDocument.documentElement, document.documentElement);
+}
 </script>
